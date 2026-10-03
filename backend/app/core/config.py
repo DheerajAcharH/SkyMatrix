@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     confidence_threshold: float = 0.45
     max_image_bytes: int = 10_000_000
     device_api_key: str = ""
+    cloudinary_url: str = ""
+    firebase_service_account_json: str = ""
     firestore_database_id: str = "(default)"
     cors_origins: list[str] = [
         "http://localhost:5173",

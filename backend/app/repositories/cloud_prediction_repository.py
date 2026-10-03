@@ -1,8 +1,8 @@
 import json
-import os
 from datetime import datetime, timezone
 from functools import lru_cache
 from io import BytesIO
+from urllib.parse import unquote, urlparse
 
 import cloudinary
 import cloudinary.uploader
@@ -17,7 +17,7 @@ def _firestore_client():
     try:
         app = firebase_admin.get_app()
     except ValueError:
-        raw_credentials = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON", "")
+        raw_credentials = get_settings().firebase_service_account_json
         if not raw_credentials:
             raise RuntimeError("FIREBASE_SERVICE_ACCOUNT_JSON must be configured.")
         app = firebase_admin.initialize_app(credentials.Certificate(json.loads(raw_credentials)))
@@ -26,9 +26,20 @@ def _firestore_client():
 
 class CloudPredictionRepository:
     def __init__(self) -> None:
-        if not os.getenv("CLOUDINARY_URL"):
+        settings = get_settings()
+        if not settings.cloudinary_url:
             raise RuntimeError("CLOUDINARY_URL must be configured.")
-        cloudinary.config(secure=True)
+        cloudinary_url = urlparse(settings.cloudinary_url)
+        if cloudinary_url.scheme != "cloudinary" or not all(
+            (cloudinary_url.hostname, cloudinary_url.username, cloudinary_url.password)
+        ):
+            raise RuntimeError("CLOUDINARY_URL is invalid.")
+        cloudinary.config(
+            cloud_name=cloudinary_url.hostname,
+            api_key=unquote(cloudinary_url.username),
+            api_secret=unquote(cloudinary_url.password),
+            secure=True,
+        )
         self.predictions = _firestore_client().collection("predictions")
 
     def save_prediction(
