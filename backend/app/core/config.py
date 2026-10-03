@@ -9,8 +9,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    model_path: Path = Path(__file__).resolve().parents[2] / "models" / "best.pt"
-    confidence_threshold: float = 0.45
+    model_path: Path = Path(__file__).resolve().parents[2] / "yolov8n.pt"
+    confidence_threshold: float = 0.35
     max_image_bytes: int = 10_000_000
     device_api_key: str = "esp32-cam-skymatrix"
     cloudinary_url: str = ""

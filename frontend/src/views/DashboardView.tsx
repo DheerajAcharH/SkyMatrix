@@ -46,8 +46,8 @@ export function DashboardView() {
         </article>
         <article className="metric">
           <div className="metric-heading"><span>Model confidence</span><ShieldCheck size={16} /></div>
-          <strong>45<em>%</em></strong>
-          <small>Minimum detection threshold</small>
+          <strong>35<em>%</em></strong>
+          <small>Person detection threshold</small>
         </article>
       </section>
 
@@ -63,14 +63,10 @@ export function DashboardView() {
               <input type="file" accept="image/jpeg,image/png" onChange={(event) => dashboard.setTestFile(event.target.files?.[0] ?? null)} />
             </label>
             {dashboard.testFile && <span className="selected-file">{dashboard.testFile.name}</span>}
-            <label className="key-control">
-              Device API key
-              <input type="password" autoComplete="off" value={dashboard.deviceKey} onChange={(event) => dashboard.setDeviceKey(event.target.value)} placeholder="Enter the configured device key" />
-            </label>
-            <button className="test-button" type="submit" disabled={!dashboard.testFile || !dashboard.deviceKey || dashboard.testing}>
+            <button className="test-button" type="submit" disabled={!dashboard.testFile || dashboard.testing}>
               <Crosshair size={16} /> {dashboard.testing ? 'Running inference...' : 'Run model test'}
             </button>
-            <p className="test-footnote">The key is used for this request only. Test images are not saved.</p>
+            <p className="test-footnote">The stored device key is used automatically for this test. Test images are not saved.</p>
             {dashboard.testError && <div className="notice" role="alert">{dashboard.testError}</div>}
           </form>
           <div className="test-output" aria-live="polite">
@@ -81,7 +77,7 @@ export function DashboardView() {
                   <strong>{dashboard.testResult.detections.length} {dashboard.testResult.detections.length === 1 ? 'detection' : 'detections'}</strong>
                   <div className="detection-tags">
                     {dashboard.testResult.detections.length ? dashboard.testResult.detections.map((item, index) => (
-                      <span className="detection-tag" key={`${item.class_id}-${index}`}>Class {item.label}<b>{Math.round(item.confidence * 100)}%</b></span>
+                      <span className="detection-tag" key={`${item.class_id}-${index}`}>{item.label}<b>{Math.round(item.confidence * 100)}%</b></span>
                     )) : <span className="no-detections">No objects above threshold</span>}
                   </div>
                 </div>
@@ -117,7 +113,7 @@ export function DashboardView() {
                   <div className="frame-title"><strong>{prediction.device_id}</strong><span className={prediction.detection_count ? 'count-pill active' : 'count-pill'}>{prediction.detection_count} {prediction.detection_count === 1 ? 'detection' : 'detections'}</span></div>
                   <div className="detection-tags">
                     {prediction.detections.length ? prediction.detections.slice(0, 5).map((item, itemIndex) => (
-                      <span className="detection-tag" key={`${item.class_id}-${itemIndex}`}>Class {item.label}<b>{Math.round(item.confidence * 100)}%</b></span>
+                      <span className="detection-tag" key={`${item.class_id}-${itemIndex}`}>{item.label}<b>{Math.round(item.confidence * 100)}%</b></span>
                     )) : <span className="no-detections">No objects above threshold</span>}
                     {prediction.detections.length > 5 && <span className="more-tag">+{prediction.detections.length - 5}</span>}
                   </div>

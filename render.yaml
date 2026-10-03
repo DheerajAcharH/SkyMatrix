@@ -10,9 +10,9 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.9
       - key: MODEL_PATH
-        value: models/best.pt
+        value: yolov8n.pt
       - key: CONFIDENCE_THRESHOLD
-        value: 0.45
+        value: 0.35
       - key: MAX_IMAGE_BYTES
         value: 10000000
       - key: CLOUDINARY_URL

@@ -8,7 +8,6 @@ export function useDashboardViewModel() {
   const [error, setError] = useState<string | null>(null)
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null)
   const [testFile, setTestFile] = useState<File | null>(null)
-  const [deviceKey, setDeviceKey] = useState('')
   const [testResult, setTestResult] = useState<InferenceTestResult | null>(null)
   const [testError, setTestError] = useState<string | null>(null)
   const [testing, setTesting] = useState(false)
@@ -41,12 +40,12 @@ export function useDashboardViewModel() {
   const latest = predictions[0] ?? null
 
   async function runModelTest() {
-    if (!testFile || !deviceKey) return
+    if (!testFile) return
     setTesting(true)
     setTestError(null)
     setTestResult(null)
     try {
-      setTestResult(await testPrediction(testFile, deviceKey))
+      setTestResult(await testPrediction(testFile, 'esp32-cam-skymatrix'))
     } catch (cause) {
       setTestError(cause instanceof Error ? cause.message : 'Model test failed.')
     } finally {
@@ -56,6 +55,6 @@ export function useDashboardViewModel() {
 
   return {
     predictions, loading, error, updatedAt, latest, totalDetections, refresh,
-    testFile, setTestFile, deviceKey, setDeviceKey, testResult, testError, testing, runModelTest,
+    testFile, setTestFile, testResult, testError, testing, runModelTest,
   }
 }

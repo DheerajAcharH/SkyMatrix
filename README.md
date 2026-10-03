@@ -5,12 +5,12 @@ An ESP32-CAM inference pipeline and browser dashboard, organized as one project 
 ## Architecture
 
 - `backend/`: FastAPI API, YOLO inference service, Cloudinary image repository, and Firebase Admin/Firestore access.
-- `backend/models/best.pt`: the custom trained model copied from `Mini_Project`.
+- `backend/yolov8n.pt`: official pretrained YOLOv8n COCO weights used for person detection. The custom `backend/models/best.pt` weights are preserved but are not the active inference model.
 - `frontend/`: React + TypeScript dashboard, organized into `models`, `services`, `viewmodels`, and `views` (MVVM).
 - `firebase.json`: Firebase Hosting configuration for the built dashboard.
 - `render.yaml`: Render deployment definition for the inference API.
 
-Each ESP32-CAM frame is uploaded to Render, inferred with the custom YOLO model at confidence `0.45`, annotated with boxes, class names, and confidence scores, uploaded to Cloudinary, and indexed in Firestore. The dashboard refreshes the latest 50 records every 15 seconds and displays each annotated image.
+Each ESP32-CAM frame is uploaded to Render, inferred with pretrained YOLOv8n at confidence `0.35` for the COCO `person` class, annotated with boxes and confidence scores, uploaded to Cloudinary, and indexed in Firestore. The dashboard refreshes the latest 50 records every 15 seconds and displays each annotated image.
 
 Firebase Hosting serves the frontend. Cloudinary stores images. Firestore's `(default)` database stores prediction metadata and image URLs. Supabase is not used. Keep the Cloudinary API secret, Firebase service-account JSON, and device key on the backend only. The current dashboard read endpoint and Cloudinary delivery URLs are public; add Firebase Authentication before using this with sensitive operational imagery or locations.
 

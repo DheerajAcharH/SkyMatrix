@@ -31,6 +31,7 @@ def predict(image_bytes: bytes) -> tuple[list[Detection], bytes]:
         result = _load_model().predict(
             source=image,
             conf=get_settings().confidence_threshold,
+            classes=[0],
             verbose=False,
         )[0]
 
