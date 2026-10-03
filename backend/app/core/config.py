@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     device_api_key: str = ""
     cloudinary_url: str = ""
     firebase_service_account_json: str = ""
+    firebase_service_account_file: Path | None = None
     firestore_database_id: str = "(default)"
     cors_origins: list[str] = [
         "http://localhost:5173",

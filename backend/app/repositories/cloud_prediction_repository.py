@@ -17,10 +17,18 @@ def _firestore_client():
     try:
         app = firebase_admin.get_app()
     except ValueError:
-        raw_credentials = get_settings().firebase_service_account_json
-        if not raw_credentials:
-            raise RuntimeError("FIREBASE_SERVICE_ACCOUNT_JSON must be configured.")
-        app = firebase_admin.initialize_app(credentials.Certificate(json.loads(raw_credentials)))
+        settings = get_settings()
+        if settings.firebase_service_account_json:
+            service_account = credentials.Certificate(
+                json.loads(settings.firebase_service_account_json)
+            )
+        elif settings.firebase_service_account_file and settings.firebase_service_account_file.is_file():
+            service_account = credentials.Certificate(str(settings.firebase_service_account_file))
+        else:
+            raise RuntimeError(
+                "FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_SERVICE_ACCOUNT_FILE must be configured."
+            )
+        app = firebase_admin.initialize_app(service_account)
     return firestore.client(app=app, database_id=get_settings().firestore_database_id)
 
 

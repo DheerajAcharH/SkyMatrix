@@ -26,7 +26,7 @@ Firebase Hosting serves the frontend. Cloudinary stores images. Firestore's `(de
    Copy-Item .env.example .env
    ```
 
-2. Fill in `backend/.env` with `CLOUDINARY_URL`, the Firebase service-account JSON for project `skymatrix-hd`, and a long random `DEVICE_API_KEY`. Set `FIRESTORE_DATABASE_ID=(default)`. The backend writes documents to the `predictions` collection; keep Firestore access restricted to the Admin SDK.
+2. Fill in `backend/.env` with `CLOUDINARY_URL` and a long random `DEVICE_API_KEY`. For local development, place the Firebase Admin key at `backend/secrets/firebase-admin.json` and set `FIREBASE_SERVICE_ACCOUNT_FILE=secrets/firebase-admin.json`; this folder is ignored by Git. On Render, provide the service-account JSON through the `FIREBASE_SERVICE_ACCOUNT_JSON` environment variable instead. Set `FIRESTORE_DATABASE_ID=(default)`. The backend writes documents to the `predictions` collection; keep Firestore access restricted to the Admin SDK.
 
 3. Start the API from `backend/`:
 
