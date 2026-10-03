@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: skymatrix-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: MODEL_PATH
+        value: models/best.pt
+      - key: CONFIDENCE_THRESHOLD
+        value: 0.45
+      - key: MAX_IMAGE_BYTES
+        value: 10000000
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: FIRESTORE_DATABASE_ID
+        value: (default)
+      - key: DEVICE_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: '["http://localhost:5173","https://skymatrix-hd.web.app","https://skymatrix-hd.firebaseapp.com"]'
