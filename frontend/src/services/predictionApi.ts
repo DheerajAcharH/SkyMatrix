@@ -1,6 +1,6 @@
 import type { Detection, Prediction } from '../models/prediction'
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'https://skymatrix.onrender.com').replace(/\/$/, '')
 
 export type InferenceTestResult = {
   detections: Detection[]

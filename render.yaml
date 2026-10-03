@@ -22,6 +22,6 @@ services:
       - key: FIRESTORE_DATABASE_ID
         value: (default)
       - key: DEVICE_API_KEY
-        sync: false
+        value: esp32-cam-skymatrix
       - key: CORS_ORIGINS
         value: '["http://localhost:5173","https://skymatrix-hd.web.app","https://skymatrix-hd.firebaseapp.com"]'
